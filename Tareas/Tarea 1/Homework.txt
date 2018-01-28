@@ -1,0 +1,71 @@
+Computer Graphics
+In-class Assignment 1.2
+
+write a program in Java that draws the outline of a geometric shape in the terminal (in text mode)  using the char "+"
+
+a) rectange rows cols
+b) diamond side
+c) hexagon side
+d) octagon side
+
+Write one class per geometric shape, the parameter is read in the command line
+(use the String args[] of the main method)
+
+example of execution:
+
+java Rectangle 3 4
+
++ + + +
++     +
++ + + +
+
+java Diamond 4
+
+      +
+    +   +
+  +       +
++           +
+  +       +
+    +   +
+      +
+
+java Hexagon 5
+
+    + + + + +
+   +         +
+  +           +
+ +             +
++               +
+ +             +
+  +           +
+   +         +
+    + + + + +
+
+java Octagon 3
+
+
+    + + +
+  +       +
++           +
++           +
++           +
+  +       +
+    + + +
+
+
+Due date:
+Jan 18, 15:55 hrs
+(You can upload it any time before the due date)
+
+Please follow the homework rules and the coding conventions
+
+You can work in pairs.
+
+Upload a ZIP file containing A FOLDER that contains:
+    Rectangle.java
+    Diamond.java   
+    Hexagon.java
+    Octagon.java
+    teamMembers.txt
+
+teamMembers.txt is a plain text file that contains student name and student id of the team members

@@ -1,0 +1,7 @@
+3
+45
+34
+13
+yes
+no
+I don't know
