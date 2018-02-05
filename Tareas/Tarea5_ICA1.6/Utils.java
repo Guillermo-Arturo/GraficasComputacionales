@@ -1,3 +1,6 @@
+//Guillermo Arturo Hernández Tapia	A01321776
+//José María Montiel Palacios		A01323942
+
 public class Utils{    
     /**
      * Calculates the maximum element in an integer array

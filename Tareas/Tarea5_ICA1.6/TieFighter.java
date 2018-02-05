@@ -1,3 +1,6 @@
+//Guillermo Arturo Hernández Tapia	A01321776
+//José María Montiel Palacios		A01323942
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
