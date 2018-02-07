@@ -35,8 +35,6 @@ public class TieFighter extends JApplet
 
     int numberOfPoints = xCoordinates.length;
 
-    double rotationAngle = 0d;
-
     public void init() {
         // Initialize the applet; set it up to receive keyboard
         // and focus events.  Place the square in the middle of
@@ -154,30 +152,25 @@ public class TieFighter extends JApplet
 
         switch(ch){
             case 'E':{
-                rotationAngle -= 0.1d;
-                rotate(rotationAngle);
+                rotate(-1);
                 break;
             }
             case 'e':{
-                rotationAngle -= 0.1d;
-                rotate(rotationAngle);
+                rotate(-1);
                 break;
             }
             case 'D':{
-                rotationAngle += 0.1d;
-                rotate(rotationAngle);
+                rotate(1);
                 break;
             }
             case 'd':{
-                rotationAngle += 0.1d;
-                rotate(rotationAngle);
+                rotate(1);
                 break;
             }
         }
    }  // end keyTyped()
 
    private void rotate(double angle){
-        System.out.println("Angulo de rotación: " + angle);
         transformations.rotation(xCoordinates, yCoordinates, angle, utils);
         canvas.repaint();
    }
