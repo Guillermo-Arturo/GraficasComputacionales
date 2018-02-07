@@ -37,4 +37,22 @@ public class Utils{
         }
         return numMin;
     }
+
+    /**
+     * Calcultates the average of the elements in an integer array
+     *
+     * @param array: the array to evaluate
+     * @param scale: the resized scale of the original figure
+     * @return
+     */
+    public double avgPoints(double[] array) {
+        double avg = 0;
+        for (int i = 0; i < array.length; i++) {
+            avg += array[i];
+        }
+        avg /= array.length;
+        avg = Math.round(avg);
+
+        return  avg;
+    }
 }

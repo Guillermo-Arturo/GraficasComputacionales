@@ -13,6 +13,7 @@ public class TieFighter extends JApplet
 
     Color tieFighterColor;
     Utils utils;
+    Transformations transformations;
    
     boolean focussed = false;   // True when this applet has input focus.
    
@@ -34,8 +35,7 @@ public class TieFighter extends JApplet
 
     int numberOfPoints = xCoordinates.length;
 
-    final int dx = 10;
-    final int dy = 10;
+    double rotationAngle = 0d;
 
     public void init() {
         // Initialize the applet; set it up to receive keyboard
@@ -47,6 +47,7 @@ public class TieFighter extends JApplet
 	   
         tieFighterColor = Color.black;
         utils = new Utils();
+        transformations = new Transformations();
         
         canvas = new DisplayPanel();  // Create drawing surface and 
         setContentPane(canvas);       //    install it as the applet's content pane.
@@ -61,8 +62,8 @@ public class TieFighter extends JApplet
         * To move the original points to the center of the window.
         */
         for(int i=0; i < numberOfPoints; i++){
-            xCoordinates[i] += 600;
-            yCoordinates[i] += 300;
+            xCoordinates[i] += 450;
+            yCoordinates[i] += 150;
         }
 
         tieFighterSizeWidth = utils.getMaxArrayValue(xCoordinates) - utils.getMinArrayValue(xCoordinates);
@@ -149,11 +150,37 @@ public class TieFighter extends JApplet
           // of the keys that represents a color, change
           // the color of the square and redraw the applet.
           
-      char ch = evt.getKeyChar();  // The character typed.
+        char ch = evt.getKeyChar();  // The character typed.
 
-     
-
+        switch(ch){
+            case 'E':{
+                rotationAngle -= 0.1d;
+                rotate(rotationAngle);
+                break;
+            }
+            case 'e':{
+                rotationAngle -= 0.1d;
+                rotate(rotationAngle);
+                break;
+            }
+            case 'D':{
+                rotationAngle += 0.1d;
+                rotate(rotationAngle);
+                break;
+            }
+            case 'd':{
+                rotationAngle += 0.1d;
+                rotate(rotationAngle);
+                break;
+            }
+        }
    }  // end keyTyped()
+
+   private void rotate(double angle){
+        System.out.println("Angulo de rotación: " + angle);
+        transformations.rotation(xCoordinates, yCoordinates, angle, utils);
+        canvas.repaint();
+   }
    
    
    public void keyPressed(KeyEvent evt) { 
