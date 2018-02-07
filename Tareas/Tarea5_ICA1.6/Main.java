@@ -4,7 +4,7 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-class Loader{
+class Main{
       public static void main(String[] args) {
       TieFighter applet = new TieFighter();
       applet.init();
