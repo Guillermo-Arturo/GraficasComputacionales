@@ -1,6 +1,5 @@
-//Guillermo Arturo Hernández Tapia	A01321776
-//José María Montiel Palacios		A01323942
-
+//Guillermo Arturo Hernandez Tapia  A01321776
+//Jose Maria Montiel Palacios   A01323942
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -21,14 +20,19 @@ public class TieFighter extends JApplet
                          // belonging to a nested class DisplayPanel, which
                          // is defined below.
 
-    double[] xCoordinates = {90, 70, 50, 30, 50, 70, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 240, 260, 280, 260, 240,
-                            220, 240, 260, 280, 280, 260, 240, 220, 240, 260, 280, 260, 240, 210, 220, 230, 220, 210, 220, 230, 220, 210,
-                            200, 190, 180, 170, 160, 150, 140, 130, 120, 110, 100, 90, 80, 90, 100, 90, 80, 90, 100, 70, 50, 30, 50, 70, 
-                            90, 70, 50, 30, 30 };
-    double[] yCoordinates = {220, 200, 180, 140, 150, 160, 170, 180, 190, 200, 200, 200, 200, 200, 200, 190, 180, 170, 160, 150, 140, 180, 
-                            200, 220, 200, 180, 140, 120, 80, 60, 40, 60, 80, 120, 110, 100, 90, 110, 130, 150, 170, 150, 130, 110, 90, 80,
-                            70, 60, 60, 60, 60, 60, 60, 70, 80, 90, 110, 130, 150, 170, 150, 130, 110, 90, 100, 110, 120, 80, 60, 40, 60, 80,
-                            120, 140};
+    double[] xCoordinates = { 10, 10, 10, 10, 10, 10, 10, 30, 30, 40, 70, 100, 100, 110, 115, 125, 130, 135, 135, 140, 140, 150, 160, 180,
+                            190, 200, 210, 220, 230, 240, 240, 245, 245, 250, 255, 265, 270, 280, 280, 310, 340, 350, 350, 370, 370, 370,
+                            370, 370, 370, 370, 370, 350, 350, 340, 310, 280, 250, 240, 240, 235, 235, 235, 230, 230, 230, 225, 225, 225, 
+                            220, 220, 210, 170, 160, 170, 180, 200, 210, 220, 160, 160, 155, 155, 155, 150, 150, 150, 145, 145, 145, 140, 
+                            140, 130, 100, 70, 40, 30, 30, 10 };
+
+    double[] yCoordinates = { 210, 170, 130, 90, 50, 90, 110, 110, 120, 120, 110, 100, 90, 90, 80, 80, 90, 90, 80, 80, 90, 80, 70, 70, 70, 
+                            70, 70, 70, 80, 90, 80, 80, 90, 90, 80, 80, 90, 90, 100, 110, 120, 120, 110, 110, 90, 50, 90, 130, 170, 210, 
+                            150, 150, 140, 140, 150, 160, 180, 190, 210, 220, 230, 220, 220, 230, 220, 220, 230, 220, 210, 200, 210, 210, 
+                            200, 200, 210, 210, 200, 200, 200, 210, 220, 230, 220, 220, 230, 220, 220, 230, 220, 210, 190, 180, 160, 150,
+                            140, 140, 150, 150 };
+
+    double angleDirection=0.0;
 
     double tieFighterSizeWidth = 0f;
     double tieFighterSizeHeight = 0f;
@@ -152,24 +156,51 @@ public class TieFighter extends JApplet
 
         switch(ch){
             case 'E':{
-                rotate(-1);
+                rotate(-3.0);
+                angleDirection+=-1.0;
                 break;
             }
             case 'e':{
-                rotate(-1);
+                rotate(-3.0);
+                angleDirection+=-1.0;
                 break;
             }
             case 'D':{
-                rotate(1);
+                rotate(3.0);
+                angleDirection+=1.0;
                 break;
             }
             case 'd':{
-                rotate(1);
+                rotate(3.0);
+                angleDirection+=1.0;
+                break;
+            }
+
+
+
+            case 'R':{
+                scale(1.5);
+                break;
+            }
+            case 'r':{
+                scale(1.5);
+                break;
+            }
+            case 'F':{
+                scale(.8);
+                break;
+            }
+            case 'f':{
+                scale(.8);
                 break;
             }
         }
    }  // end keyTyped()
 
+  private void scale(double scale){
+        transformations.scale(xCoordinates, yCoordinates, scale, utils);
+        canvas.repaint();
+   }
    private void rotate(double angle){
         transformations.rotation(xCoordinates, yCoordinates, angle, utils);
         canvas.repaint();
@@ -185,9 +216,33 @@ public class TieFighter extends JApplet
           
       int key = evt.getKeyCode();  // keyboard code for the key that was pressed
       
-
+      move(key);
+      /*
+      switch(key){
+            case 38:{ // up Arrow
+                moveUp();
+                break;
+            }
+            case 39:{ // right Arrow
+                moveRight();
+                break;
+            }
+            case 40:{ // down Arrow
+                moveDown(1);
+                break;
+            }
+            case 37:{ // left Arrow
+                moveLeft(1);
+                break;
+            }
+        }
+        */
+      
    }  // end keyPressed()
-
+    private void move(int key){
+        transformations.move(xCoordinates, yCoordinates, key, utils, angleDirection);
+        canvas.repaint();
+    }
 
    public void keyReleased(KeyEvent evt) { 
       // empty method, required by the KeyListener Interface

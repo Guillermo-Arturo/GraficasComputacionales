@@ -8,6 +8,7 @@ public class Transformations{
      * @param arrayX: the points on the X-Axis
      * @param arrayY: the points on the Y-Axis
      * @param angle: the angle of rotation
+     * @param utils: object that implement some general methods like avgPoints.
      */
     public void rotation(double[] arrayX, double[] arrayY, double angle, Utils utils) {
         double avgX = utils.avgPoints(arrayX);
