@@ -19,11 +19,12 @@ class Edge {
    }
 }
 
-public class ConeDrawer extends JApplet 
+public class SphereDrawer extends JApplet 
                   implements KeyListener, FocusListener, MouseListener {
                       
-   double radio, height;
-   int base_divisions, height_divisions;
+   private double radio;
+   private int yrc, xzd;
+   private int width, height;
 
    int azimuth = 35, elevation = 30;
 
@@ -34,66 +35,79 @@ public class ConeDrawer extends JApplet
    
    DisplayPanel canvas;
 
-   public ConeDrawer(double radio, double height, int bd, int hd){
+   public SphereDrawer(double radio, int yrc, int xzd){
       this.radio = radio;
-      this.height = height;
-      base_divisions = bd;
-      height_divisions = hd;
+      this.yrc = yrc;
+      this.xzd = xzd;
    }
 
    public void init() {
 
-      int num_vertex = 2 + base_divisions * 2 + base_divisions * (height_divisions - 1);
-      int num_edges = base_divisions + (base_divisions * 4) + (base_divisions * (height_divisions - 1));
-      
-      vertices = new Point3D[num_vertex];
-      edges = new Edge[num_edges];
+      int number_of_points = (yrc * xzd) + 2;
+      vertices = new Point3D[number_of_points];
 
-      int vertex_count = 0;
-      int edges_count = 0;
-      double step_size = 0;
+      //To define the central point of the up face of the sphere.
+      vertices[0] = new Point3D(0, radio, 0);
+      double aux_x, aux_y, aux_z;
+      double angle = 90.0/((yrc + 1) / 2);
+      double aux_angle = 90.0 - angle;
+      double zx_divitions = 360.0 / xzd;
+      double aux_radio = 0.0;
+      int index_up = 1, index_down = 0;
 
-      double angle_step = 360.0 / base_divisions;
+      for(int j=0; j < yrc; j++){
+            double temp = 0.0;
+            aux_y = (double)(Math.sin(Math.toRadians(aux_angle)) * radio);
+            aux_radio = (double)(Math.cos(Math.toRadians(aux_angle)) * radio);
 
-      Point3D middle_cone = new Point3D(0, height / 2.0, 0);
-
-      vertices[vertex_count++] = middle_cone;
-
-      double y_middle_coordinate = middle_cone.y;
-
-      for(int base=0; base < base_divisions; base++){
-            double x = middle_cone.x + Math.cos(Math.toRadians(step_size)) * radio;
-            double z = middle_cone.z - Math.sin(Math.toRadians(step_size)) * radio;
-
-            vertices[vertex_count++] = new Point3D(x, y_middle_coordinate, z);
-            if(base > 0)
-                  edges[edges_count++] = new Edge(vertex_count -1, vertex_count - 2);
-
-            edges[edges_count++] = new Edge(vertex_count - 1, 0);
-            step_size += angle_step;
-      }
-
-      edges[edges_count++] = new Edge(vertex_count -1, 1);
-
-      double y_num_divisions = height / (double) height_divisions;
-
-      for(int y=1; y < height_divisions; y++){
-            y_middle_coordinate += y_num_divisions;
-
-            for(int base=0; base < base_divisions; base++){
-                  Point3D top_cone = vertices[vertex_count - base_divisions];
-                  double x = top_cone.x + Math.cos(Math.toRadians(step_size)) * radio;
-                  double z = top_cone.z - Math.sin(Math.toRadians(step_size)) * radio;
-                  vertices[vertex_count++] = new Point3D(x, top_cone.y - y_num_divisions, z);
-
-                  if(base > 0)
-                        edges[edges_count++] = new Edge(vertex_count -2 , vertex_count - 1);       
+            for(int i=0; i < xzd; i++){
+                  temp += zx_divitions;
+                  aux_x = Math.cos(Math.toRadians(temp)) * aux_radio;
+                  aux_z = Math.sin(Math.toRadians(temp)) * aux_radio;
+                  vertices[index_up] = new Point3D(aux_x, aux_y, aux_z);
+                  index_up ++;
             }
-
-            radio -= 0.5; 
-
-            edges[edges_count++] = new Edge(vertex_count - 1, vertex_count - base_divisions);
+            aux_angle -= angle;
       }
+
+      //To define the central point of the down face of the sphere.
+      vertices[index_up] = new Point3D(0, -radio, 0);
+
+      int aux_a = (yrc + 1) * xzd;
+      int aux_b = yrc * xzd;
+      edges = new Edge[aux_a + aux_b];
+
+      for(int i=1; i <= xzd; i++){
+            edges[index_down] = new Edge(0, i);
+            index_down ++;
+      }
+
+      int current_edge = 1;
+      for(int i=0; i < yrc - 1; i++){
+            for(int j=0; j < xzd; j++){
+                  edges[index_down] = new Edge(current_edge, current_edge + xzd);
+                  current_edge ++;
+                  index_down ++;
+            }
+      }
+
+      int temp = index_down;
+      for(int i=1; i <= xzd; i++){
+            edges[index_down] = new Edge(index_up, temp);
+            temp --;
+            index_down ++;
+      }
+
+      for(int i=0; i < (xzd * yrc); i++){
+            if((index_down + 1) % xzd == 0)
+                  edges[index_down] = new Edge((i + 1), ((i + 2) - xzd));
+            else
+                  edges[index_down] = new Edge(i + 1, i + 2);
+
+            index_down++;
+      }
+
+
 
       canvas = new DisplayPanel();  // Create drawing surface and 
       setContentPane(canvas);       //    install it as the applet's content pane.

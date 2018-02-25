@@ -4,23 +4,22 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Cone{
+public class Sphere{
 
     public static void main(String[] args) {
 
-        double radio, height;
-        int base_divisions, height_divisions;
+        double radio;
+        int y_divisions, zx_divisions;
 
-        if(args.length > 3){
+        if(args.length > 2){
             
             radio = Double.parseDouble(args[0]);
-            height = Double.parseDouble(args[1]);
-            base_divisions = Integer.parseInt(args[2]);
-            height_divisions = Integer.parseInt(args[3]);
+            y_divisions = Integer.parseInt(args[1]);
+            zx_divisions = Integer.parseInt(args[2]);
 
-            ConeDrawer applet = new ConeDrawer(radio, height, base_divisions, height_divisions);
+            SphereDrawer applet = new SphereDrawer(radio, y_divisions, zx_divisions);
             applet.init();
-            final JFrame frame = new JFrame("Cone Viewer");
+            final JFrame frame = new JFrame("Sphere Viewer");
             frame.setContentPane(applet.getContentPane());
             frame.setJMenuBar(applet.getJMenuBar());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,9 +31,8 @@ public class Cone{
         }else{
             System.out.println("ERROR: You need to give me " + "\n"
                                 + "Radio value" + "\n"
-                                + "Height value" + "\n"
-                                + "Divisions of the base value" + "\n"
-                                + "Divisions of height value" + "\n");
+                                + "Number of divisions in y plane" + "\n"
+                                + "Number of divitions in zx plane" + "\n");
         }
     }
 }
