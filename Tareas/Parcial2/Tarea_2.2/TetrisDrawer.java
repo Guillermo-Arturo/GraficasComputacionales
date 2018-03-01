@@ -106,7 +106,7 @@ public class TetrisDrawer extends JApplet
       edges[34] = new Edge( 18, 1 );
       edges[35] = new Edge( 19, 8 );
 
-      faces = new Face[18];
+      faces = new Face[19];
       faces[0] = new Face(0,1,3,2);
       faces[1] = new Face(0,4,6,2);
       faces[2] = new Face(1,5,7,3);
@@ -120,11 +120,12 @@ public class TetrisDrawer extends JApplet
       faces[10] = new Face(3,7,15,13);
       faces[11] = new Face(12,14,15,13);
       faces[12] = new Face(6,7,15,14);
-      faces[13] = new Face(16,17,18, 1);
-      faces[14] = new Face(16,2,12,18);
-      faces[15] = new Face(17,3,13,19);
-      faces[16] = new Face(18,12,13,19);
-      faces[17] = new Face(16,2,3,17);
+      faces[13] = new Face(16,17,18,19);
+      faces[14] = new Face(16,2,0,19);
+      faces[15] = new Face(17,3,2,16);
+      faces[16] = new Face(13,12,2,3);
+      faces[17] = new Face(0,1,18,19);
+      faces[18] = new Face(1,18,17,3);
     
       canvas = new DisplayPanel();  // Create drawing surface and 
       setContentPane(canvas);       //    install it as the applet's content pane.
@@ -317,6 +318,9 @@ public class TetrisDrawer extends JApplet
                               break;
                         }case 17:{
                               g.setColor(new Color(0, 255, 255)); 
+                              break;
+                        }case 18:{
+                              g.setColor(new Color(255, 0, 0)); 
                               break;
                         }
                   }
