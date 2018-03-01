@@ -22,8 +22,9 @@ class Edge {
 public class ConeDrawer extends JApplet 
                   implements KeyListener, FocusListener, MouseListener {
                       
-   double radio, height;
-   int base_divisions, height_divisions;
+   private double radio, h;
+   private int yrc, xzd;
+   private int width, height;
 
    int azimuth = 35, elevation = 30;
 
@@ -34,47 +35,73 @@ public class ConeDrawer extends JApplet
    
    DisplayPanel canvas;
 
-   public ConeDrawer(double radio, double height, int bd, int hd){
-      this.radio = radio;
-      this.height = height;
-      base_divisions = bd;
-      height_divisions = hd;
+   public ConeDrawer(double radio,double h, int yrc, int xzd){
+      this.radio  = radio;
+      this.h      = h;
+      this.yrc    = yrc;
+      this.xzd    = xzd;
    }
 
    public void init() {
 
-      int num_vertex = 2 + base_divisions * 2 + base_divisions * (height_divisions - 1);
-      int num_edges = base_divisions + (base_divisions * 4) + (base_divisions * (height_divisions - 1));
-      
-      vertices = new Point3D[num_vertex];
-      edges = new Edge[num_edges];
+      int number_of_points = (yrc * xzd) + 2;
+      vertices = new Point3D[number_of_points];
 
-      int vertex_count = 0;
-      int edges_count = 0;
-      double step_size = 0;
+      vertices[0] = new Point3D(0, h, 0);
+      double aux_z, aux_h=((double)h/yrc), aux_rad=((double)radio/yrc);
+      double aux_y=h;
+      double aux_x=0;
+      double angle = 90.0/(yrc);
+      double aux_angle = 90.0 - angle;
+      double zx_divitions = 360.0 / xzd;
+      double aux_radio = 0.0;
+      int index_up = 1, index_down = 0;
 
-      double angle_step = 360.0 / base_divisions;
+      for(int j=0; j < yrc; j++){
+            double temp = 0.0;
+            aux_y -=aux_h;
+            aux_radio +=aux_rad;
 
-      Point3D middle_cone = new Point3D(0, height / 2.0, 0);
-
-      vertices[vertex_count++] = middle_cone;
-
-      double y_middle_coordinate = middle_cone.y;
-
-      for(int base=0; base < base_divisions; base++){
-            double x = middle_cone.x + Math.cos(Math.toRadians(step_size)) * radio;
-            double z = middle_cone.z - Math.sin(Math.toRadians(step_size)) * radio;
-
-            vertices[vertex_count++] = new Point3D(x, y_middle_coordinate, z);
-            if(base > 0)
-                  edges[edges_count++] = new Edge(vertex_count -1, vertex_count - 2);
-
-            edges[edges_count++] = new Edge(vertex_count - 1, 0);
-            step_size += angle_step;
+            for(int i=0; i < xzd; i++){
+                  temp += zx_divitions;  //its an angle for rotating around Y axis
+                  aux_x = Math.cos(Math.toRadians(temp)) * aux_radio;
+                  aux_z = Math.sin(Math.toRadians(temp)) * aux_radio;
+                  vertices[index_up] = new Point3D(aux_x, aux_y, aux_z);
+                  index_up ++;
+            }
+            aux_angle -= angle;
       }
 
-      edges[edges_count++] = new Edge(vertex_count -1, 1);
+      int aux_a = (yrc + 1) * xzd;
+      int aux_b = yrc * xzd;
+      edges = new Edge[aux_a + aux_b];
 
+      /**vertical from the first point to the imidiate parallel to the XZ plane.**/
+      for(int i=1; i <= xzd; i++){
+            edges[index_down] = new Edge(0, i);
+            index_down ++;
+      }
+
+      /**vertical union.**/
+      int current_edge = 1;
+      for(int i=0; i < yrc - 1; i++){
+            for(int j=0; j < xzd; j++){
+                  edges[index_down] = new Edge(current_edge, current_edge + xzd);
+                  current_edge ++;
+                  index_down ++;
+            }
+      }
+
+      /**Horizontal union.**/
+      for(int i=0; i < (xzd * yrc); i++){
+            if((index_down + 1) % xzd == 0)
+                  edges[index_down] = new Edge((i + 1), ((i + 2) - xzd));
+            else
+                  edges[index_down] = new Edge(i + 1, i + 2);
+
+            index_down++;
+      }
+  
       canvas = new DisplayPanel();  // Create drawing surface and 
       setContentPane(canvas);       //    install it as the applet's content pane.
    
